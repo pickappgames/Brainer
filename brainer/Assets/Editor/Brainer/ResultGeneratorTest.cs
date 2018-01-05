@@ -1,19 +1,37 @@
-﻿using NSubstitute;
+﻿using Core.Result;
 using NUnit.Framework;
 
-namespace Editor.Brainer
-{
+namespace Editor.Brainer {
     public class ResultGeneratorTest {
-
-        [Test]
-        public void first_test()
-        {
-            Substitute.For<IMyAction>();
-        }
         
-    }
+        private ResultGenerator resultGenerator;
+        
+        private const int START = 1;
+        private const int ENDS = 10;
+        private const int QUANTITY = 4;
 
-    public interface IMyAction
-    {
+        private GameResults result;
+        
+        [Test]
+        public void return_result() {
+            GivenAResultGenerator();
+            WhenAskForResult();
+            ThenReturnResult();
+        }
+
+        private void GivenAResultGenerator() {
+            resultGenerator = new ResultGenerator(QUANTITY, START, ENDS, new AdditionOperator());
+        }
+
+        private void WhenAskForResult() {
+            var current = 2;
+            result = resultGenerator.Generate(current);
+        }
+
+        private void ThenReturnResult() {
+            Assert.AreEqual(QUANTITY, result.GetQuantity());
+            Assert.AreEqual("+", result.Symbol);
+            Assert.NotNull(result.GetCorrectResult());
+        }
     }
 }
