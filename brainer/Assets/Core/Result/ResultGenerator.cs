@@ -20,10 +20,10 @@ namespace Core.Result
         public GameResults Generate(int current) {
             var randomNumber = new Random().Next(start, ends);
             var correctResult = mathOperator.Apply(current, randomNumber);
-            var results = new List<GameResult> {new GameResult(true, correctResult)};
+            var results = new List<GameResult> {new GameResult(correctResult)};
             for (var i = 0; i < quantity - 1; i++) {
                 var incorrectResult = new Random().Next(correctResult - 10, correctResult + 10);
-                results.Add(new GameResult(false, incorrectResult));
+                results.Add(new GameResult(incorrectResult));
             }
             return new GameResults(mathOperator.GetSymbol(), results);
         }
@@ -42,19 +42,13 @@ namespace Core.Result
         public int GetQuantity() {
             return Results.Count;
         }
-
-        public GameResult GetCorrectResult() {
-            return Results.Find(result => result.IsCorrect);
-        }
     }
 
     public class GameResult {
         
-        public bool IsCorrect { get; private set; }
         public int Value { get; private set; }
 
-        public GameResult(bool isCorrect, int value) {
-            IsCorrect = isCorrect;
+        public GameResult(int value) {
             Value = value;
         }
     }

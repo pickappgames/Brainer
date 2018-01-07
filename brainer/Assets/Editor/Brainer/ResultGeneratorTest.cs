@@ -31,7 +31,6 @@ namespace Editor.Brainer {
         private void ThenReturnResult() {
             Assert.AreEqual(QUANTITY, result.GetQuantity());
             Assert.AreEqual("+", result.Symbol);
-            Assert.NotNull(result.GetCorrectResult());
         }
     }
 }
