@@ -29,6 +29,13 @@ namespace Editor.Brainer.Action {
             ThenGuessIsCorrect();
         }
 
+        [Test]
+        public void guess_incorrect() {
+            GivenAGame();
+            WhenGuessIncorrect();
+            ThenGuessIsIncorrect();
+        }
+
         private void GivenAGame() {
             game = new BrainerGame(INITIAL_NUMBER);
             gameRepository.Find().Returns(game);
@@ -42,6 +49,14 @@ namespace Editor.Brainer.Action {
 
         private void ThenGuessIsCorrect() {
             Assert.IsTrue(result.IsCorrect());
+        }
+
+        private void WhenGuessIncorrect() {
+            result = new Guess(gameRepository, resultRepository).Invoke(GUESSED_NUMBER + 1);
+        }
+
+        private void ThenGuessIsIncorrect() {
+            Assert.IsFalse(result.IsCorrect());
         }
     }
 }
