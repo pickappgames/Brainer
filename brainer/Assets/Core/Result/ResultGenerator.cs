@@ -9,16 +9,16 @@ namespace Core.Result
         private readonly int start;
         private readonly int ends;
         private readonly IOperator mathOperator;
+        private readonly NumberGenerator numberGenerator;
 
-        public ResultGenerator(int quantity, int start, int ends, IOperator mathOperator) {
+        public ResultGenerator(int quantity, IOperator mathOperator, NumberGenerator numberGenerator) {
             this.quantity = quantity;
-            this.start = start;
-            this.ends = ends;
             this.mathOperator = mathOperator;
+            this.numberGenerator = numberGenerator;
         }
 
         public GameResults Generate(int current) {
-            var randomNumber = new Random().Next(start, ends);
+            var randomNumber = numberGenerator.Generate();
             var correctResult = mathOperator.Apply(current, randomNumber);
             var correct = new GameResult(correctResult);
             var results = new List<GameResult> {correct};

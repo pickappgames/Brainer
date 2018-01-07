@@ -32,7 +32,7 @@ namespace Editor.Brainer.Action {
         }
 
         private void WhenCreateResult() {
-            results = new CreateResult(gameRepository, new ResultGenerator(QUANTITY, 1, 10, new AdditionOperator())).Invoke();
+            results = new CreateResult(gameRepository, new ResultGenerator(QUANTITY, new AdditionOperator(), new RandomNumberGenerator(1, 10))).Invoke();
         }
 
         private void ThenResultIsCreated() {

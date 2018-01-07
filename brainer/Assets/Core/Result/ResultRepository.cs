@@ -3,5 +3,6 @@
 
         GameResults Find();
 
+        void Put(GameResults newResults);
     }
 }

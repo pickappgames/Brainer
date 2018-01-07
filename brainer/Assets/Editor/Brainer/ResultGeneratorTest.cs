@@ -20,7 +20,7 @@ namespace Editor.Brainer {
         }
 
         private void GivenAResultGenerator() {
-            resultGenerator = new ResultGenerator(QUANTITY, START, ENDS, new AdditionOperator());
+            resultGenerator = new ResultGenerator(QUANTITY, new AdditionOperator(), new RandomNumberGenerator(START, ENDS));
         }
 
         private void WhenAskForResult() {

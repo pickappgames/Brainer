@@ -7,7 +7,6 @@ using NUnit.Framework;
 
 namespace Editor.Brainer.Action {
     public class GuessTest {
-
         private const int INITIAL_NUMBER = 2;
 
         private GameRepository gameRepository;
@@ -44,7 +43,9 @@ namespace Editor.Brainer.Action {
         }
 
         private void WhenGuessCorrect() {
-            result = new Guess(gameRepository, resultRepository).Invoke(GUESSED_NUMBER);
+            result = new Guess(gameRepository, resultRepository,
+                    new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)))
+                .Invoke(GUESSED_NUMBER);
         }
 
         private void ThenGuessIsCorrect() {
@@ -52,7 +53,9 @@ namespace Editor.Brainer.Action {
         }
 
         private void WhenGuessIncorrect() {
-            result = new Guess(gameRepository, resultRepository).Invoke(GUESSED_NUMBER + 1);
+            result = new Guess(gameRepository, resultRepository,
+                    new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)))
+                .Invoke(GUESSED_NUMBER + 1);
         }
 
         private void ThenGuessIsIncorrect() {
