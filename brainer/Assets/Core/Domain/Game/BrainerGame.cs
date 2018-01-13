@@ -1,8 +1,7 @@
 ﻿namespace Core.Domain.Game {
     public class BrainerGame {
-
         private int currentNumber;
-        
+
         public BrainerGame(int initialNumber) {
             currentNumber = initialNumber;
         }

@@ -1,28 +1,30 @@
 ﻿using Core.Domain.Game;
+using Core.Domain.Result;
 using Core.Result;
 
 namespace Core.Action {
-   
     public class Guess {
-        
         private readonly GameRepository gameRepository;
-        private readonly ResultRepository resultRepository;
         private readonly ResultGenerator resultGenerator;
+        private readonly IResultRepository resultRepository;
 
-        public Guess(GameRepository gameRepository, ResultRepository resultRepository, ResultGenerator resultGenerator) {
+        public Guess(GameRepository gameRepository, IResultRepository resultRepository,
+            ResultGenerator resultGenerator) {
             this.gameRepository = gameRepository;
             this.resultRepository = resultRepository;
             this.resultGenerator = resultGenerator;
         }
+
         public GuessResult Invoke(int guessedNumber) {
             var lastResult = resultRepository.Find();
-            
-            if (lastResult.IsCorrect(guessedNumber)){
+
+            if (lastResult.IsCorrect(guessedNumber)) {
                 GenerateNewResult(guessedNumber);
                 UpdateGame(guessedNumber);
                 return new GuessResult(true);
             }
-            
+
+            resultRepository.Clear();
             return new GuessResult(false);
         }
 

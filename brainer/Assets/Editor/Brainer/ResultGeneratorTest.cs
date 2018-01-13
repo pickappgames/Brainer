@@ -1,4 +1,5 @@
-﻿using Core.Result;
+﻿using Core.Domain.Result;
+using Core.Result;
 using NUnit.Framework;
 
 namespace Editor.Brainer {
@@ -30,7 +31,7 @@ namespace Editor.Brainer {
 
         private void ThenReturnResult() {
             Assert.AreEqual(QUANTITY, result.GetQuantity());
-            Assert.AreEqual("+", result.Symbol);
+            Assert.AreEqual("+", result.GetSymbol());
         }
     }
 }

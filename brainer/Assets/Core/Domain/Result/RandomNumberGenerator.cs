@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace Core.Result {
-    
-    public class RandomNumberGenerator : NumberGenerator{
-        
-        private readonly int start;
+namespace Core.Domain.Result {
+    public class RandomNumberGenerator : NumberGenerator {
         private readonly int ends;
+
+        private readonly int start;
 
         public RandomNumberGenerator(int start, int ends) {
             this.start = start;

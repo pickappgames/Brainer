@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.Action;
 using Core.Domain.Game;
+using Core.Domain.Result;
 using Core.Result;
 using NSubstitute;
 using NUnit.Framework;
@@ -12,13 +13,13 @@ namespace Editor.Brainer.Action {
         private GameRepository gameRepository;
         private BrainerGame game;
         private GuessResult result;
-        private ResultRepository resultRepository;
+        private IResultRepository resultRepository;
         private const int GUESSED_NUMBER = 5;
 
         [SetUp]
         public void SetUp() {
             gameRepository = Substitute.For<GameRepository>();
-            resultRepository = Substitute.For<ResultRepository>();
+            resultRepository = Substitute.For<IResultRepository>();
         }
 
         [Test]
@@ -39,7 +40,7 @@ namespace Editor.Brainer.Action {
             game = new BrainerGame(INITIAL_NUMBER);
             gameRepository.Find().Returns(game);
             resultRepository.Find()
-                .Returns(new GameResults("+", new List<GameResult>(), GUESSED_NUMBER));
+                .Returns(new GameResults(new AdditionOperator(), new List<GameResult>(), INITIAL_NUMBER, 3));
         }
 
         private void WhenGuessCorrect() {

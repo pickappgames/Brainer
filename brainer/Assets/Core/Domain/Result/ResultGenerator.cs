@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
-namespace Core.Result
-{
+namespace Core.Domain.Result {
     public class ResultGenerator {
-        
-        private readonly int quantity;
-        private readonly int start;
         private readonly int ends;
         private readonly IOperator mathOperator;
         private readonly NumberGenerator numberGenerator;
+
+        private readonly int quantity;
+        private readonly int start;
 
         public ResultGenerator(int quantity, IOperator mathOperator, NumberGenerator numberGenerator) {
             this.quantity = quantity;
@@ -23,10 +23,11 @@ namespace Core.Result
             var correct = new GameResult(correctResult);
             var results = new List<GameResult> {correct};
             for (var i = 0; i < quantity - 1; i++) {
-                var incorrectResult = new Random().Next(correctResult - 10, correctResult + 10);
+                var incorrectResult = Random.Range(correctResult + 2, correctResult + 10);
                 results.Add(new GameResult(incorrectResult));
             }
-            return new GameResults(mathOperator.GetSymbol(), results, correctResult);
+
+            return new GameResults(mathOperator, results, current, randomNumber);
         }
     }
 }

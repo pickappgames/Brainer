@@ -1,7 +1,7 @@
-﻿namespace Core.Result {
-    
-    public class AdditionOperator : IOperator{
-        
+﻿using Core.Result;
+
+namespace Core.Domain.Result {
+    public class AdditionOperator : IOperator {
         public string GetSymbol() {
             return "+";
         }

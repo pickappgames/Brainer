@@ -1,5 +1,7 @@
 ﻿using Core.Action;
 using Core.Domain.Game;
+using Core.Domain.Result;
+using Core.Result;
 using Infraestructure.Game;
 using NSubstitute;
 using NUnit.Framework;
@@ -13,10 +15,14 @@ namespace Editor.Brainer.Action {
         private BrainerGame game;
         private GameRepository gameRepository;
         private InitialNumberGenerator initialNumberGenerator;
+        private ResultGenerator resultGenerator;
+        private IResultRepository resultRepository;
 
         [SetUp]
         public void Setup() {
             gameRepository = new InMemoryGameRepository();
+            resultGenerator = new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10));
+            resultRepository = Substitute.For<IResultRepository>();
         }
         [Test]
         public void create_game() {
@@ -31,7 +37,7 @@ namespace Editor.Brainer.Action {
         }
 
         private void WhenCreateGame() {
-            game = new CreateGame(gameRepository, initialNumberGenerator).Invoke();
+            game = new CreateGame(gameRepository, initialNumberGenerator, resultGenerator, resultRepository).Invoke();
         }
 
         private void ThenGameIsCreated() {
