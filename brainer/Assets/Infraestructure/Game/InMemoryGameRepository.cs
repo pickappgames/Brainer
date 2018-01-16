@@ -13,5 +13,9 @@ namespace Infraestructure.Game {
         public void Put(BrainerGame game) {
             this.game = game;
         }
+
+        public void Clear() {
+            this.game = null;
+        }
     }
 }

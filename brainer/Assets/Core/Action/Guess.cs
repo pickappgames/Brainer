@@ -19,12 +19,12 @@ namespace Core.Action {
             var lastResult = resultRepository.Find();
 
             if (lastResult.IsCorrect(guessedNumber)) {
+                resultRepository.Clear();
                 GenerateNewResult(guessedNumber);
                 UpdateGame(guessedNumber);
                 return new GuessResult(true);
             }
 
-            resultRepository.Clear();
             return new GuessResult(false);
         }
 

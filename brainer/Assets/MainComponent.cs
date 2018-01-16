@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets;
 using Core.Action;
 using Core.Domain.Game;
 using Core.Domain.Result;
@@ -17,13 +18,18 @@ public class MainComponent : MonoBehaviour {
 	private ResultGenerator resultGenerator;
 	private GameRepository gameRepository;
 	private IResultRepository resultRepository;
-	
+
+	private void Awake() {
+		gameRepository = InstanceCache.GetOrInstanciate<InMemoryGameRepository>(()=> new InMemoryGameRepository());
+		resultRepository = InstanceCache.GetOrInstanciate<InMemoryResultRepository>(()=> new InMemoryResultRepository());
+		gameRepository.Clear();
+		resultRepository.Clear();
+	}
+
 	void Start() {
-		gameRepository = new InMemoryGameRepository();
-		resultRepository = new InMemoryResultRepository();
 		new CreateGame(gameRepository, new FixedInitialNumber(), new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)), resultRepository).Invoke();
 		InstanciateFirstResult();
-		InvokeRepeating("InstanciateResult", 5f, 5f);  //1s delay, repeat every 1s
+		InvokeRepeating("InstanciateResult", 8f, 5f);  //1s delay, repeat every 1s
 	}
 
 	private void InstanciateFirstResult() {
@@ -43,8 +49,7 @@ public class MainComponent : MonoBehaviour {
 
 	void InstanciateResult() {
 		Player.GetComponentInChildren<Text>().text = gameRepository.Find().GetCurrentNumber().ToString();
-		resultGenerator = new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 20));
-		var gameResults = resultGenerator.Generate(gameRepository.Find().GetCurrentNumber());
+		var gameResults = resultRepository.Find();
 		var gamerResultsValues = gameResults.Results;
 		Shuffle(gamerResultsValues);
 		var instantiate = Instantiate(ResultPrefab);
