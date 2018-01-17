@@ -20,23 +20,25 @@ namespace Core.Action {
 
             if (lastResult.IsCorrect(guessedNumber)) {
                 resultRepository.Clear();
-                GenerateNewResult(guessedNumber);
-                UpdateGame(guessedNumber);
-                return new GuessResult(true);
+                var newResult = GenerateNewResult(guessedNumber);
+                var brainerGame = UpdateGame(guessedNumber);
+                return new GuessResult(true, newResult, brainerGame);
             }
 
-            return new GuessResult(false);
+            return new GuessResult(false, null, null);
         }
 
-        private void GenerateNewResult(int guessedNumber) {
+        private GameResults GenerateNewResult(int guessedNumber) {
             var newResults = resultGenerator.Generate(guessedNumber);
             resultRepository.Put(newResults);
+            return newResults;
         }
 
-        private void UpdateGame(int guessedNumber) {
+        private BrainerGame UpdateGame(int guessedNumber) {
             var game = gameRepository.Find();
             game.UpdateCurrentNumber(guessedNumber);
             gameRepository.Put(game);
+            return game;
         }
     }
 }

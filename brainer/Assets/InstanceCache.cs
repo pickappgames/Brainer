@@ -7,7 +7,7 @@ namespace Assets {
     {
         static Dictionary<Type, object> instances = new Dictionary<Type, object>();
 
-        static T Get<T>()
+        public static T Get<T>()
         {
             Type type = typeof(T);
             object singletonObj;

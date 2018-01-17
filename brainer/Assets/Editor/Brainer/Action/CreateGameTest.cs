@@ -37,7 +37,7 @@ namespace Editor.Brainer.Action {
         }
 
         private void WhenCreateGame() {
-            game = new CreateGame(gameRepository, initialNumberGenerator, resultGenerator, resultRepository).Invoke();
+            game = new CreateGame(gameRepository, initialNumberGenerator, resultGenerator, resultRepository).Invoke().Game;
         }
 
         private void ThenGameIsCreated() {

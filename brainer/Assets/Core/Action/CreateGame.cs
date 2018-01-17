@@ -19,13 +19,23 @@ namespace Core.Action {
             this.resultRepository = resultRepository;
         }
 
-        public BrainerGame Invoke() {
+        public BrainerGameCreated Invoke() {
             var initialNumber = initialNumberGenerator.Generate();
             var gameResults = resultGenerator.Generate(initialNumber);
             resultRepository.Put(gameResults);
             var game = new BrainerGame(initialNumber);
             gameRepository.Put(game);
-            return game;
+            return new BrainerGameCreated(game, gameResults);
+        }
+    }
+
+    public class BrainerGameCreated {
+        public BrainerGame Game { get; private set; }
+        public GameResults Results { get; private set; }
+
+        public BrainerGameCreated(BrainerGame brainerGame, GameResults results) {
+            Game = brainerGame;
+            Results = results;
         }
     }
 }
