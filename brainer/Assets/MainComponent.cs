@@ -41,7 +41,7 @@ public class MainComponent : MonoBehaviour {
 		
 		gamePresenter = InstanceCache.GetOrInstanciate<GamePresenter>(
 			() => {
-				resultGenerator = new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10));
+				resultGenerator = new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(5, 15));
 				return new GamePresenter(
 					this,
 					new CreateGame(gameRepository,
