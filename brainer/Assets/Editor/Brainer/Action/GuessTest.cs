@@ -2,6 +2,7 @@
 using Core.Action;
 using Core.Domain.Game;
 using Core.Domain.Result;
+using Core.Domain.Score;
 using Core.Result;
 using NSubstitute;
 using NUnit.Framework;
@@ -14,12 +15,14 @@ namespace Editor.Brainer.Action {
         private BrainerGame game;
         private GuessResult result;
         private IResultRepository resultRepository;
+        private ScoreService scoreService;
         private const int GUESSED_NUMBER = 5;
 
         [SetUp]
         public void SetUp() {
             gameRepository = Substitute.For<GameRepository>();
             resultRepository = Substitute.For<IResultRepository>();
+            scoreService = Substitute.For<ScoreService>();
         }
 
         [Test]
@@ -45,7 +48,7 @@ namespace Editor.Brainer.Action {
 
         private void WhenGuessCorrect() {
             result = new Guess(gameRepository, resultRepository,
-                    new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)))
+                    new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)), scoreService)
                 .Invoke(GUESSED_NUMBER);
         }
 
@@ -55,7 +58,7 @@ namespace Editor.Brainer.Action {
 
         private void WhenGuessIncorrect() {
             result = new Guess(gameRepository, resultRepository,
-                    new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)))
+                    new ResultGenerator(4, new AdditionOperator(), new RandomNumberGenerator(1, 10)), scoreService)
                 .Invoke(GUESSED_NUMBER + 1);
         }
 

@@ -5,8 +5,10 @@ using Assets;
 using Core.Action;
 using Core.Domain.Game;
 using Core.Domain.Result;
+using Core.Domain.Score;
 using Infraestructure.Game;
 using Infraestructure.Result;
+using Infraestructure.Score;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,11 +19,14 @@ public class MainComponent : MonoBehaviour {
 	public GameObject Operation;
 	public Text PlayerText;
 	public Image YouLose;
+	public Text ScoreText;
+	public Text MaxScoreText;
 	
 	private ResultGenerator resultGenerator;
 	private GameRepository gameRepository;
 	private IResultRepository resultRepository;
 	private GamePresenter gamePresenter;
+	private ScoreService scoreService;
 	
 	private void Awake() {
 		YouLose.gameObject.SetActive(false);
@@ -29,9 +34,10 @@ public class MainComponent : MonoBehaviour {
 		
 		gameRepository = InstanceCache.GetOrInstanciate<InMemoryGameRepository>(()=> new InMemoryGameRepository());
 		resultRepository = InstanceCache.GetOrInstanciate<InMemoryResultRepository>(()=> new InMemoryResultRepository());
-		
+		scoreService = InstanceCache.GetOrInstanciate<LocalScoreService>(() => new LocalScoreService());
 		resultRepository.Clear();
 		gameRepository.Clear();
+		scoreService.Reset();
 		
 		gamePresenter = InstanceCache.GetOrInstanciate<GamePresenter>(
 			() => {
@@ -42,7 +48,8 @@ public class MainComponent : MonoBehaviour {
 						new FixedInitialNumber(),
 						resultGenerator,
 						resultRepository),
-					new Guess(gameRepository, resultRepository, resultGenerator));
+					new Guess(gameRepository, resultRepository, resultGenerator, scoreService),
+					scoreService);
 			});
 
 	}
@@ -84,5 +91,16 @@ public class MainComponent : MonoBehaviour {
 	private IEnumerator DoTheDance() {
 		yield return new WaitForSeconds(2);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	public void IncrementScore() {
+		var score = ScoreText.text;
+		var scoreNumber = int.Parse(score);
+		scoreNumber++;
+		ScoreText.text = scoreNumber.ToString();
+	}
+
+	public void DisplayMaxScore(int maxScore) {
+		MaxScoreText.text = maxScore.ToString();
 	}
 }

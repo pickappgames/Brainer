@@ -1,5 +1,6 @@
 ﻿using Core.Domain.Game;
 using Core.Domain.Result;
+using Core.Domain.Score;
 using Core.Result;
 
 namespace Core.Action {
@@ -7,12 +8,16 @@ namespace Core.Action {
         private readonly GameRepository gameRepository;
         private readonly ResultGenerator resultGenerator;
         private readonly IResultRepository resultRepository;
+        private readonly ScoreService scoreService;
 
-        public Guess(GameRepository gameRepository, IResultRepository resultRepository,
-            ResultGenerator resultGenerator) {
+        public Guess(GameRepository gameRepository, 
+            IResultRepository resultRepository,
+            ResultGenerator resultGenerator,
+            ScoreService scoreService) {
             this.gameRepository = gameRepository;
             this.resultRepository = resultRepository;
             this.resultGenerator = resultGenerator;
+            this.scoreService = scoreService;
         }
 
         public GuessResult Invoke(int guessedNumber) {
@@ -22,6 +27,7 @@ namespace Core.Action {
                 resultRepository.Clear();
                 var newResult = GenerateNewResult(guessedNumber);
                 var brainerGame = UpdateGame(guessedNumber);
+                scoreService.IncrementScore();
                 return new GuessResult(true, newResult, brainerGame);
             }
 
